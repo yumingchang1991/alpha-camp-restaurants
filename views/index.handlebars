@@ -1,5 +1,5 @@
 <!-- search bar -->
-<div class="container search-bar">
+<div class="container search-bar"> 
   <div class="search-bar-outer">
     <div class="search-bar-inner">
       <form action="/search">
@@ -12,17 +12,15 @@
           </div>
         </div>
       </form>
-      {{#if searchResult.displayAlert}}
-      <div class="alert alert-danger mt-5" role="alert">
-        {{searchResult.message}}
-      </div>
-      {{/if}}
     </div>
   </div>
-  
 </div>
 
-
+{{#if searchResult.displayAlert}}
+<div class="alert alert-danger mt-5 text-center" role="alert">
+  {{searchResult.message}}
+</div>
+{{/if}}
 
 <!-- restaurant list -->
 <div class="container mt-5">
