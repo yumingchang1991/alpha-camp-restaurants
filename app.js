@@ -62,12 +62,20 @@ const model = {
     return restaurantFound
   },
 
-  returnSearchResult(displayAlert = false, keyword = '') {
+  returnIndexPageOptions(displayAlert = false, keyword = '') {
     return {
       displayAlert,
       keyword: keyword.trim(),
       message: utils.returnAlertMessage(keyword.trim())
     }
+  },
+
+  async returnRestaurantsSearchResult(keyword) {
+    const regex = new RegExp(keyword, 'gi')
+    const restaurants = await model.getRestaurants()
+    return restaurants.filter(restaurant => {
+      return restaurant.name.match(regex) || restaurant.name_en.match(regex) || restaurant.category.match(regex)
+    })
   }
 }
 
@@ -81,6 +89,14 @@ const view = {
 
   renderShowPage(res, restaurant) {
     return res.render('show', { restaurant })
+  },
+
+  renderNewPage(res) {
+    return res.render('new')
+  },
+
+  renderEditPage(res, restaurant) {
+    return res.render('edit', { restaurant })
   }
 }
 
@@ -92,72 +108,78 @@ app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: false }))
 
-// server route
-app.get('/', async (req, res) => {
-  return view.renderIndexPage(res, await model.getRestaurants(), model.returnSearchResult(false))
-})
+// routing
+app.route('/')
+  .get(async (req, res) => {
+    const restaurantsToRender = await model.getRestaurants()
+    const indexPageOptions = model.returnIndexPageOptions(false)
+    return view.renderIndexPage(res, restaurantsToRender, indexPageOptions)
+  })
 
-app.get('/restaurants/new', (req, res) => {
-  return res.render('new')
-})
+app.route('/restaurants')
+  .post((req, res) => {
+    const newRestaurant = utils.returnRestaurantFromBody(req, res)
+    return Restaurant
+      .create(newRestaurant)
+      .then(() => res.redirect('/'))
+      .catch(error => console.error(error))
+  })
 
-app.get('/restaurants/:id', async (req, res) => {
-  const restaurant = await model.getRestaurant(req.params.id)
-  return view.renderShowPage(res, restaurant)
-})
+app.route('/restaurants/new')
+  .get((req, res) => {
+    return view.renderNewPage(res)
+  })
 
-app.post('/restaurants', (req, res) => {
-  const newRestaurant = utils.returnRestaurantFromBody(req, res)
-  Restaurant
-    .create(newRestaurant)
-    .then(() => res.redirect('/'))
-    .catch( error => console.error(error))
-})
+app.route('/restaurants/:id')
+  .get(async (req, res) => {
+    const restaurant = await model.getRestaurant(req.params.id)
+    return view.renderShowPage(res, restaurant)
+  })
 
-app.get('/search', async (req, res) => {
-  if (utils.isSearchQueryEmpty(req)) {
-    const restaurantsToRender = []
-    const keyword = ''
-    return view.renderIndexPage(res, restaurantsToRender, model.returnSearchResult(true, keyword))
-  }
+app.route('/restaurants/:id/edit')
+  .get(async (req, res) => {
+    const restaurant = await model.getRestaurant(req.params.id)
+    return view.renderEditPage(res, restaurant)
+  })
 
-  const keyword = req.query.keyword.trim()
-  const regex = new RegExp(keyword, 'gi')
+app.route('/restaurants/:id/edit')
+  .post((req, res) => {
+    const id = req.params.id
+    const modifiedRestaurant = utils.returnRestaurantFromBody(req, res)
 
-  const restaurants = await model.getRestaurants()
-  const restaurantsFiltered = restaurants
-    .filter(restaurant => {
-      return restaurant.name.match(regex) || restaurant.name_en.match(regex) || restaurant.category.match(regex)
-    })
+    Restaurant
+      .findByIdAndUpdate(id, modifiedRestaurant, { new: true, upsert: true })
+      .then(updatedRestaurant => res.redirect('/restaurants/' + id))
+      .catch(error => console.error(error))
+  })
 
-  if (restaurantsFiltered.length > 0) {
-    return view.renderIndexPage(res, restaurantsFiltered, model.returnSearchResult(false, keyword))
-  }
-  return view.renderIndexPage(res, restaurantsFiltered, model.returnSearchResult(true, keyword))
-})
+app.route('/restaurants/:id/delete')
+  .post((req, res) => {
+    Restaurant
+      .findByIdAndRemove(req.params.id)
+      .then(restaurantFound => res.redirect('/'))
+      .catch(error => console.error(error))
+  })
 
-app.get('/restaurants/:id/edit', async (req, res) => {
-  const restaurant = await model.getRestaurant(req.params.id)
-  res.render('edit', { restaurant })
-})
+app.route('/search')
+  .get(async (req, res) => {
+    // is query string valid ?
+    if (utils.isSearchQueryEmpty(req)) {
+      const restaurantsToRender = []
+      const keyword = ''
+      const indexPageOptions = model.returnIndexPageOptions(true, keyword)
+      return view.renderIndexPage(res, restaurantsToRender, indexPageOptions)
+    }
 
-app.post('/restaurants/:id/edit', async (req, res) => {
-  const id = req.params.id
-  const modifiedRestaurant = utils.returnRestaurantFromBody(req, res)
-
-  const updateRestaurantQuery = await Restaurant
-    .findByIdAndUpdate(id, modifiedRestaurant, { new: true, upsert: true })
-    .then(updatedRestaurant => res.redirect('/restaurants/' + id) )
-    .catch( error => console.error(error))
-})
-
-app.post('/restaurants/:id/delete', async (req, res) => {
-  const restaurantQuery = await Restaurant
-    .findByIdAndRemove(req.params.id)
-    .then( restaurantFound => res.redirect('/'))
-    .catch( error => console.error(error))
-})
-
+    // Declare variables for search
+    const keyword = req.query.keyword.trim()
+    const restaurantsFiltered = await model.returnRestaurantsSearchResult(keyword)
+    const displayAlert = (restaurantsFiltered.length === 0)
+      ? true
+      : false
+    const indexPageOptions = model.returnIndexPageOptions(displayAlert, keyword)
+    return view.renderIndexPage(res, restaurantsFiltered, indexPageOptions)
+  })
 
 
 // server listen
