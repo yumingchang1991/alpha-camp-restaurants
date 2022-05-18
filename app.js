@@ -15,6 +15,23 @@ const utils = {
 
   isSearchQueryEmpty(req) {
     return !req.query || req.query.keyword.trim().length === 0
+  },
+
+  returnRestaurantFromBody(req, res) {
+    if (!req.body) {
+      return res.redirect('/')
+    }
+    return {
+      name: req.body.name,
+      name_en: req.body.name_en,
+      category: req.body.category,
+      rating: req.body.rating,
+      location: req.body.location,
+      phone: req.body.phone,
+      image: req.body.image,
+      google_map: req.body.google_map,
+      description: req.body.description
+    }
   }
 }
 
@@ -80,9 +97,21 @@ app.get('/', async (req, res) => {
   return view.renderIndexPage(res, await model.getRestaurants(), model.returnSearchResult(false))
 })
 
+app.get('/restaurants/new', (req, res) => {
+  return res.render('new')
+})
+
 app.get('/restaurants/:id', async (req, res) => {
   const restaurant = await model.getRestaurant(req.params.id)
   return view.renderShowPage(res, restaurant)
+})
+
+app.post('/restaurants', (req, res) => {
+  const newRestaurant = utils.returnRestaurantFromBody(req, res)
+  Restaurant
+    .create(newRestaurant)
+    .then(() => res.redirect('/'))
+    .catch( error => console.error(error))
 })
 
 app.get('/search', async (req, res) => {
@@ -114,27 +143,22 @@ app.get('/restaurants/:id/edit', async (req, res) => {
 
 app.post('/restaurants/:id/edit', async (req, res) => {
   const id = req.params.id
-  if (!req.query) {
-    return res.redirect('/')
-  }
-
-  const modifiedRestaurant = {
-    name: req.body.name,
-    name_en: req.body.name_en,
-    category: req.body.category,
-    rating: req.body.rating,
-    location: req.body.location,
-    phone: req.body.phone,
-    image: req.body.image,
-    google_map: req.body.google_map,
-    description: req.body.description
-  }
+  const modifiedRestaurant = utils.returnRestaurantFromBody(req, res)
 
   const updateRestaurantQuery = await Restaurant
-    .findByIdAndUpdate(id, modifiedRestaurant, { new: true })
+    .findByIdAndUpdate(id, modifiedRestaurant, { new: true, upsert: true })
     .then(updatedRestaurant => res.redirect('/restaurants/' + id) )
     .catch( error => console.error(error))
 })
+
+app.post('/restaurants/:id/delete', async (req, res) => {
+  const restaurantQuery = await Restaurant
+    .findByIdAndRemove(req.params.id)
+    .then( restaurantFound => res.redirect('/'))
+    .catch( error => console.error(error))
+})
+
+
 
 // server listen
 app.listen(port, () => console.log(`Express is listening on localhost:${port}...`))
