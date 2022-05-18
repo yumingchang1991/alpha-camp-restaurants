@@ -6,7 +6,7 @@ const { engine } = require('express-handlebars')
 const app = express()
 const port = 3000
 
-const controller = {
+const utils = {
   returnAlertMessage(keyword) {
     return keyword.trim().length > 0
       ? `Oops, we couldn't find a match for '${keyword.trim()}'. Try another one?`
@@ -26,7 +26,7 @@ const model = {
       .sort({
         rating: 'desc',
         name_en: 'asc'
-       })
+      })
       .lean()
       .then(restaurants => restaurantsFound = restaurants.slice())
       .catch(error => console.error(error))
@@ -39,8 +39,8 @@ const model = {
     const restaurantQuery = await Restaurant
       .findById(id)
       .lean()
-      .then( restaurant => Object.assign(restaurantFound, restaurant) )
-      .catch( error => console.error(error))
+      .then(restaurant => Object.assign(restaurantFound, restaurant))
+      .catch(error => console.error(error))
 
     return restaurantFound
   },
@@ -49,7 +49,7 @@ const model = {
     return {
       displayAlert,
       keyword: keyword.trim(),
-      message: controller.returnAlertMessage(keyword.trim())
+      message: utils.returnAlertMessage(keyword.trim())
     }
   }
 }
@@ -71,8 +71,9 @@ const view = {
 app.engine('handlebars', engine({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 
-// static
+// middleware
 app.use(express.static('public'))
+app.use(express.urlencoded({ extended: false }))
 
 // server route
 app.get('/', async (req, res) => {
@@ -85,25 +86,54 @@ app.get('/restaurants/:id', async (req, res) => {
 })
 
 app.get('/search', async (req, res) => {
-  if (controller.isSearchQueryEmpty(req)) {
+  if (utils.isSearchQueryEmpty(req)) {
     const restaurantsToRender = []
     const keyword = ''
     return view.renderIndexPage(res, restaurantsToRender, model.returnSearchResult(true, keyword))
   }
-  
+
   const keyword = req.query.keyword.trim()
   const regex = new RegExp(keyword, 'gi')
-  
+
   const restaurants = await model.getRestaurants()
   const restaurantsFiltered = restaurants
-      .filter(restaurant => {
-          return restaurant.name.match(regex) || restaurant.name_en.match(regex) || restaurant.category.match(regex)
-        })
+    .filter(restaurant => {
+      return restaurant.name.match(regex) || restaurant.name_en.match(regex) || restaurant.category.match(regex)
+    })
 
   if (restaurantsFiltered.length > 0) {
     return view.renderIndexPage(res, restaurantsFiltered, model.returnSearchResult(false, keyword))
   }
   return view.renderIndexPage(res, restaurantsFiltered, model.returnSearchResult(true, keyword))
+})
+
+app.get('/restaurants/:id/edit', async (req, res) => {
+  const restaurant = await model.getRestaurant(req.params.id)
+  res.render('edit', { restaurant })
+})
+
+app.post('/restaurants/:id/edit', async (req, res) => {
+  const id = req.params.id
+  if (!req.query) {
+    return res.redirect('/')
+  }
+
+  const modifiedRestaurant = {
+    name: req.body.name,
+    name_en: req.body.name_en,
+    category: req.body.category,
+    rating: req.body.rating,
+    location: req.body.location,
+    phone: req.body.phone,
+    image: req.body.image,
+    google_map: req.body.google_map,
+    description: req.body.description
+  }
+
+  const updateRestaurantQuery = await Restaurant
+    .findByIdAndUpdate(id, modifiedRestaurant, { new: true })
+    .then(updatedRestaurant => res.redirect('/restaurants/' + id) )
+    .catch( error => console.error(error))
 })
 
 // server listen
