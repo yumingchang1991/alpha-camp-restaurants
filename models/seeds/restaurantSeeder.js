@@ -105,13 +105,17 @@ mongoDb.once('open', () => {
   // Delete all documents on MongoDb
   Restaurant
     .find()
-    .then( restuarants => {
-      restuarants.deleteMany({})
+    .deleteMany()
+    .exec()
+    .then(() => {
+      console.log('All restaurants are deleted ...')
+      createSeeds()
     })
-    .then(() => console.log('All restaurants are deleted ...'))
     .catch( error => console.error(error))
-  
-  // Create seeds on MongoDB
+
+})
+
+function createSeeds() {
   for (let i = 0; i < model.restaurants.length; i++) {
     Restaurant
       .create({
@@ -127,7 +131,5 @@ mongoDb.once('open', () => {
       })
       .catch(error => console.error(error))
   }
-
   console.log('Complete resetting MongoDB with seeds data only ...')
-
-})
+}
