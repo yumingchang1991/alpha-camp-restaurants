@@ -174,9 +174,7 @@ app.route('/search')
     // Declare variables for search
     const keyword = req.query.keyword.trim()
     const restaurantsFiltered = await model.returnRestaurantsSearchResult(keyword)
-    const displayAlert = (restaurantsFiltered.length === 0)
-      ? true
-      : false
+    const displayAlert = (restaurantsFiltered.length === 0) ? true : false
     const indexPageOptions = model.returnIndexPageOptions(displayAlert, keyword)
     return view.renderIndexPage(res, restaurantsFiltered, indexPageOptions)
   })
