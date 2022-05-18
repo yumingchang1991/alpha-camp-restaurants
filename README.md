@@ -45,9 +45,10 @@ Type in command line below to automatically install dependencies listed in packa
 <br><br><br>
 
 ## Improvements Directions
-1. Enable friendly alert when there is error modifying restaurant data (it now redirects user to homepage only)
-2. Enable user to choose what target to search, is it name or category
-3. Enable user to choose how the list is sorted, by what property, and in ascending or descending order
+1. Seperate Express routing from app.js 
+2. Enable friendly alert when there is error modifying restaurant data (it now redirects user to homepage only)
+3. Enable user to choose what target to search, is it name or category
+4. Enable user to choose how the list is sorted, by what property, and in ascending or descending order
 <br><br><br>
 
 ## How To Participate
