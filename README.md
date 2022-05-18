@@ -1,17 +1,18 @@
 # My Restaurants (我的餐廳清單)
 ## Features
-1. Restaurants are **sorted ascendingly** based on their ratings in all conditions
-2. Click on a restaurant tile will bring users to another page displaying details of that restaurant
+1. Restaurants are **sorted descendingly** based on their ratings in all conditions
+2. Click on a restaurant card will bring users to another page displaying details of that restaurant
 3. Users could use keyword to search restaurants' **Mandarin** name, **English** name, and **category**
 4. **Alert message** is displayed when users try to search **spaces**, **empty string**, or there is **no match** from database
-5. If there is no match from database, full list will be rendered
+5. Users could add a new restaurant to the list, or edit existing one
 <br><br><br>
 
 ## Technology
 Runtime: `node@16.13.0` <br>
 Framework: `express@4.18.1` <br>
+Database: `mongoose@6.3.3` <br>
 View Engine: `express-handlebars@6.0.5` <br>
-Packages: `bootstrap@5.1.3` & `fontawesome@6.1.1` <br>
+Packages: `nodemon@2.0.16` & `bootstrap@5.1.3` & `fontawesome@6.1.1` & `dotenv@16.0.1` <br>
 <br><br><br>
 
 ## Instructions
@@ -23,23 +24,28 @@ Packages: `bootstrap@5.1.3` & `fontawesome@6.1.1` <br>
 `cd alpha-camp-restaurants`
 <br><br><br>
 
-#### step3: Install expess-handlebars
-if you haven't installed them globally in your computer. <br>
-Type this in command line: `npm i express-handlebars` <br>
+#### step3: Install dependencies
+Type in command line below to automatically install dependencies listed in package.json <br>
+`npm i` <br>
 
 **NOTE**
 - Bootstrap are linked with offline files that come with this repo. no action from you, YAY!
 - Font awesome is linked through CDN. no actions from you, too, YAY-YAY!
 <br><br><br>
 
-#### step4: **Run Application** by `npm run dev`
+#### step4: add environment variable to connect to your MongoDB
+- Create `.env` file to the same file level as `app.js`
+- Add a variable name `MONGODB_URI` in `.env` and assign your URI to it
 <br><br><br>
 
-#### step5: **Browse to Localhost:3000** or click this [link](http://localhost:3000)
+#### step5: **Seed Your Database** by `npm run seed`, this will add 8 dummy data to database
+<br><br><br>
+
+#### step6: **Run Application** by `npm run dev`, this will open localhost for you automatically
 <br><br><br>
 
 ## Improvements Directions
-1. Wrap the code in **better** MVC structure. I know, I'm aware that this version is too broken to look at it
+1. Enable friendly alert when there is error modifying restaurant data (it now redirects user to homepage only)
 2. Enable user to choose what target to search, is it name or category
 3. Enable user to choose how the list is sorted, by what property, and in ascending or descending order
 <br><br><br>
