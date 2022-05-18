@@ -1,15 +1,26 @@
 const express = require('express')
+const mongoDb = require('./connection.js')
+const Restaurant = require('./models/restaurant.js')
 const { engine } = require('express-handlebars')
 
 const app = express()
 const port = 3000
 
 // data
-const rawData = require('./restaurant.json')
 const model = {
-  restaurants: rawData.results.sort(
-      (restaurantA, restaurantB) => restaurantA.rating < restaurantB.rating ? 1 : -1
-    ),
+  async getRestaurants() {
+    let queryResult = []
+    const query = await Restaurant
+      .find()
+      .sort({
+        rating: 'desc',
+        name_en: 'asc'
+       })
+      .lean()
+      .then(restaurants => queryResult = restaurants.slice())
+      .catch(error => console.error(error))
+    return queryResult
+  },
 
   returnSearchResult(displayAlert = false, keyword = '') {
     let finalMessage = ''
@@ -53,11 +64,14 @@ app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 
 // server route
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
   res.render('index', {
-    restaurants: model.restaurants,
-    searchResult: model.returnSearchResult(false)})
+    restaurants: await model.getRestaurants(),
+    searchResult: model.returnSearchResult(false)
+  })
 })
+  
+  
 
 app.get('/restaurants/:id', (req, res) => {
   const id = req.params.id
