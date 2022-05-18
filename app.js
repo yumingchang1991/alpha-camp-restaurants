@@ -64,8 +64,8 @@ const model = {
 
   returnIndexPageOptions(displayAlert = false, keyword = '') {
     return {
-      displayAlert,
       keyword: keyword.trim(),
+      displayAlert,
       message: utils.returnAlertMessage(keyword.trim())
     }
   },
