@@ -70,12 +70,25 @@ const model = {
     }
   },
 
-  async returnRestaurantsSearchResult(keyword) {
+  async returnRestaurantsFound(keyword) {
     const regex = new RegExp(keyword, 'gi')
-    const restaurants = await model.getRestaurants()
-    return restaurants.filter(restaurant => {
-      return restaurant.name.match(regex) || restaurant.name_en.match(regex) || restaurant.category.match(regex)
+    let restaurantsFound = []
+    await Restaurant.find({
+      $or: [
+        {name: regex},
+        {name_en: regex},
+        {category: regex}
+      ]
     })
+      .sort({
+        rating: 'desc',
+        name_en: 'asc'
+      })
+      .lean()
+      .then(restaurants => restaurantsFound = restaurants.slice())
+      .catch(error => console.error(error))
+
+    return restaurantsFound
   }
 }
 
@@ -173,10 +186,10 @@ app.route('/search')
 
     // Declare variables for search
     const keyword = req.query.keyword.trim()
-    const restaurantsFiltered = await model.returnRestaurantsSearchResult(keyword)
-    const displayAlert = (restaurantsFiltered.length === 0) ? true : false
+    const restaurantsFound = await model.returnRestaurantsFound(keyword)
+    const displayAlert = (restaurantsFound.length === 0) ? true : false
     const indexPageOptions = model.returnIndexPageOptions(displayAlert, keyword)
-    return view.renderIndexPage(res, restaurantsFiltered, indexPageOptions)
+    return view.renderIndexPage(res, restaurantsFound, indexPageOptions)
   })
 
 
