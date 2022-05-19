@@ -19,9 +19,9 @@ Packages: `nodemon@2.0.16` & `bootstrap@5.1.3` & `fontawesome@6.1.1` & `dotenv@1
 ```
 GET   /                         read a page rendering all restaurants
 POST  /restaurants              create new restaurant in MongoDB
-GET   /restaurants/new          read a page rendering a form used to create a restaurant data
+GET   /restaurants/new          read a page rendering a form to create a restaurant data
 GET   /restaurants/:id          read a page rendering a specific restaurant
-GET   /restaurants/:id/edit     read a page rendering a form used to edit an existing restaurant data
+GET   /restaurants/:id/edit     read a page rendering a form to edit an existing restaurant data
 POST  /restaurants/:id/edit     modify an existing restaurant data based on form input
 POST  /restaurants/:id/delete   remove a specific restaurant from MongoDB
 GET   /search                   read a page rendering search result from MongoDB using users' keyword
@@ -31,11 +31,11 @@ GET   /search                   read a page rendering search result from MongoDB
 ## Instructions
 #### step1: Clone a local copy by
 `git clone https://github.com/yumingchang1991/alpha-camp-restaurants`
-<br><br><br>
+<br><br>
 
 #### step2: Change Directory to the copy
 `cd alpha-camp-restaurants`
-<br><br><br>
+<br><br>
 
 #### step3: Install dependencies
 Type in command line below to automatically install dependencies listed in package.json <br>
@@ -44,18 +44,18 @@ Type in command line below to automatically install dependencies listed in packa
 **NOTE**
 - Bootstrap are linked with offline files that come with this repo. no action from you, YAY!
 - Font awesome is linked through CDN. no actions from you, too, YAY-YAY!
-<br><br><br>
+<br><br>
 
 #### step4: add environment variable to connect to your MongoDB
 - Create `.env` file to the same file level as `app.js`
 - Add a variable name `MONGODB_URI` in `.env` and assign your URI to it
-<br><br><br>
+<br><br>
 
 #### step5: **Seed Your Database** by `npm run seed`, this will add 8 dummy data to database
-<br><br><br>
+<br><br>
 
 #### step6: **Run Application** by `npm run dev`, this will open localhost for you automatically
-<br><br><br>
+<br><br>
 
 ## Improvements Directions
 1. Seperate Express routing from app.js 
