@@ -7,6 +7,7 @@ const model = {
     let restaurantsFound = []
     await Restaurant
       .find()
+      .limit(20)
       .sort(sortOption)
       .lean()
       .then(restaurants => { restaurantsFound = restaurants.slice() })
@@ -58,6 +59,7 @@ const model = {
         { category: regex }
       ]
     })
+      .limit(20)
       .sort(sortOption)
       .lean()
       .then(restaurants => { restaurantsFound = restaurants.slice() })
