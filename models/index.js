@@ -46,7 +46,9 @@ const model = {
     }
   },
 
-  async returnRestaurantsFound (keyword) {
+  async returnRestaurantsFound (req) {
+    const sortOption = this.returnSortOption(req.query)
+    const keyword = req.query.keyword || ""
     const regex = new RegExp(keyword, 'gi')
     let restaurantsFound = []
     await Restaurant.find({
@@ -56,10 +58,7 @@ const model = {
         { category: regex }
       ]
     })
-      .sort({
-        rating: 'desc',
-        name_en: 'asc'
-      })
+      .sort(sortOption)
       .lean()
       .then(restaurants => { restaurantsFound = restaurants.slice() })
       .catch(error => console.error(error))
@@ -73,6 +72,7 @@ const model = {
       const { sortField, sortOrder } = reqQuery
       sortOption[sortField] = sortOrder
     } else {
+      // default sorting order
       sortOption.rating = 'desc'
       sortOption.name_en = 'asc'
     }

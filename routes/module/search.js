@@ -8,14 +8,16 @@ router
   .get(async (req, res) => {
     // is query string valid ?
     if (utils.isSearchQueryEmpty(req)) {
-      const restaurantsToRender = []
+      const restaurantsToRender = await model.getRestaurants(req) || []
       const indexPageOptions = model.returnIndexPageOptions(req, true)
       return view.renderIndexPage(res, restaurantsToRender, indexPageOptions)
     }
 
     // Declare variables for search
     const keyword = req.query.keyword.trim()
-    const restaurantsFound = await model.returnRestaurantsFound(keyword)
+    const restaurantsFound = keyword.length > 0
+      ? await model.returnRestaurantsFound(req)
+      : await model.getRestaurants(req)
     const displayAlert = restaurantsFound.length === 0
     const indexPageOptions = model.returnIndexPageOptions(req, displayAlert)
     return view.renderIndexPage(res, restaurantsFound, indexPageOptions)

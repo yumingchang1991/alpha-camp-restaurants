@@ -1,8 +1,12 @@
 // leverage client-side operation to add event listener on sorting
-const sortForm = document.getElementById('sort-form')
+const searchForm = document.querySelector('#search-form')
+const sortField = document.querySelector('#sort-field')
+const sortOrder = document.querySelector('#sort-order')
 
-sortForm.addEventListener('change', (e) => {
-  console.log(document.getElementById('sort-field'))
-  console.log(document.getElementById('sort-order'))
-  sortForm.submit()
+sortField.addEventListener('change', (e) => {
+  searchForm.submit()
+})
+
+sortOrder.addEventListener('change', (e) => {
+  searchForm.submit()
 })

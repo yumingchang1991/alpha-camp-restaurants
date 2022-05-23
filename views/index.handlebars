@@ -2,23 +2,22 @@
 <div class="container tool-bar d-flex justify-content-between align-items-end px-4">
   <div class="search-bar-outer">
     <div class="search-bar-inner">
-      <form action="/search">
-        <h4 class="mb-2">尋找餐廳：</h4>
-        <div class="input-group">
-          <input type="text" name="keyword" class="form-control" placeholder="輸入餐廳、分類" aria-label="Restaurant Name..."
-            value="{{searchResult.keyword}}" aria-describedby="search-button">
-          <div class="input-group-append">
-            <button class="btn btn-major" type="submit" id="search-button"><i class="fas fa-search"></i></button>
+      <form action="/search" method="GET" id="search-form" name="searchForm">
+          <h4 class="mb-2">尋找餐廳：</h4>
+          <div class="input-group">
+            <input id="input-keyword" type="text" name="keyword" class="form-control" placeholder="輸入餐廳、分類" aria-label="Restaurant Name..."
+              value="{{indexPageOptions.keyword}}" aria-describedby="search-button">
+            <div class="input-group-append">
+              <button class="btn btn-major" type="submit" id="search-button"><i class="fas fa-search"></i></button>
+            </div>
           </div>
-        </div>
       </form>
     </div>
   </div>
-  <div class="sort-bar-outer">
-    <form id='sort-form' class="d-flex" action="/" method="GET">
+  <div class="sort-bar-outer d-flex">
       <h2 class="m-0 flex-shrink-0 align-self-center">排序</h2>
       <div class="input-group flex-shrink-1 mx-1">
-        <select class="form-select" id="sort-field" name='sortField'>
+        <select class="form-select" id="sort-field" name='sortField' form="search-form">
           <option value="name" {{#if indexPageOptions.sort.name }} selected {{/if}}>中文名</option>
           <option value="name_en" {{#if indexPageOptions.sort.name_en }} selected {{/if}}>英文名</option>
           <option value="rating" {{#if indexPageOptions.sort.rating }} selected {{/if}}>評分</option>
@@ -27,12 +26,11 @@
         </select>
       </div>
       <div class="input-group flex-grow-1 flex-shrink-1">
-        <select class="form-select" id="sort-order" name='sortOrder'>
+        <select class="form-select" id="sort-order" name='sortOrder' form="search-form">
           <option value="asc" {{#if indexPageOptions.sort.asc }} selected {{/if}}>升冪 a>z</option>
           <option value="desc" {{#if indexPageOptions.sort.desc }} selected {{/if}}>降冪 z>a</option>
         </select>
       </div>
-    </form>
   </div>
 </div>
 

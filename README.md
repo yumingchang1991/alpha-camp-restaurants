@@ -17,14 +17,14 @@ Packages: `nodemon@2.0.16` & `bootstrap@5.1.3` & `fontawesome@6.1.1` & `dotenv@1
 
 ## Application Routing
 ```
-GET   /                         read a page rendering all restaurants
-POST  /restaurants              create new restaurant in MongoDB
-GET   /restaurants/new          read a page rendering a form to create a restaurant data
-GET   /restaurants/:id          read a page rendering a specific restaurant
-GET   /restaurants/:id/edit     read a page rendering a form to edit an existing restaurant data
-POST  /restaurants/:id/edit     modify an existing restaurant data based on form input
-POST  /restaurants/:id/delete   remove a specific restaurant from MongoDB
-GET   /search                   read a page rendering search result from MongoDB using users' keyword
+GET     /                         read a page rendering all restaurants
+POST    /restaurants              create new restaurant in MongoDB
+GET     /restaurants/new          read a page rendering a form to create a restaurant data
+GET     /restaurants/:id          read a page rendering a specific restaurant
+GET     /restaurants/:id/edit     read a page rendering a form to edit an existing restaurant data
+PUT     /restaurants/:id          modify an existing restaurant data based on form input
+DELETE  /restaurants/:id          remove a specific restaurant from MongoDB
+GET     /search                   read a page rendering search result from MongoDB using users' keyword
 ```
 <br><br><br>
 
