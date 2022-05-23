@@ -60,8 +60,8 @@ Type in command line below to automatically install dependencies listed in packa
 - [x] Seperate Express routing from app.js
 - [x] Seperate Model, View & Utility from app.js
 - [x] Enable user to choose how the list is sorted, by what property, and in ascending or descending order
-- [] Enable friendly alert when there is error modifying restaurant data (it now redirects user to homepage only)
-- [] Enable user to choose what target to search, is it name or category
+- [ ] Enable friendly alert when there is error modifying restaurant data (it now redirects user to homepage only)
+- [ ] Enable user to choose what target to search, is it name or category
 <br><br><br>
 
 ## How To Participate
