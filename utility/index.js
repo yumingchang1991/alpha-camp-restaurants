@@ -1,15 +1,15 @@
 const utils = {
-  returnAlertMessage(keyword) {
+  returnAlertMessage (keyword) {
     return keyword.trim().length > 0
       ? `Oops, we couldn't find a match for '${keyword.trim()}'. Try another one?`
-      : `Seriously? Your keyword is empty... Try type something and hit search again`
+      : 'Seriously? Your keyword is empty... Try type something and hit search again'
   },
 
-  isSearchQueryEmpty(req) {
+  isSearchQueryEmpty (req) {
     return !req.query || req.query.keyword.trim().length === 0
   },
 
-  returnRestaurantFromBody(req, res) {
+  returnRestaurantFromBody (req, res) {
     if (!req.body) {
       return res.redirect('/')
     }

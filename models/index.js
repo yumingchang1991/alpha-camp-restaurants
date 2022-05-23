@@ -2,24 +2,24 @@ const Restaurant = require('../models/restaurant')
 const utils = require('../utility')
 
 const model = {
-  async getRestaurants() {
+  async getRestaurants () {
     let restaurantsFound = []
-    const restaurantsQuery = await Restaurant
+    await Restaurant
       .find()
       .sort({
         rating: 'desc',
         name_en: 'asc'
       })
       .lean()
-      .then(restaurants => restaurantsFound = restaurants.slice())
+      .then(restaurants => { restaurantsFound = restaurants.slice() })
       .catch(error => console.error(error))
 
     return restaurantsFound
   },
 
-  async getRestaurant(id) {
+  async getRestaurant (id) {
     const restaurantFound = {}
-    const restaurantQuery = await Restaurant
+    await Restaurant
       .findById(id)
       .lean()
       .then(restaurant => Object.assign(restaurantFound, restaurant))
@@ -28,7 +28,7 @@ const model = {
     return restaurantFound
   },
 
-  returnIndexPageOptions(displayAlert = false, keyword = '') {
+  returnIndexPageOptions (displayAlert = false, keyword = '') {
     return {
       keyword: keyword.trim(),
       displayAlert,
@@ -36,7 +36,7 @@ const model = {
     }
   },
 
-  async returnRestaurantsFound(keyword) {
+  async returnRestaurantsFound (keyword) {
     const regex = new RegExp(keyword, 'gi')
     let restaurantsFound = []
     await Restaurant.find({
@@ -51,7 +51,7 @@ const model = {
         name_en: 'asc'
       })
       .lean()
-      .then(restaurants => restaurantsFound = restaurants.slice())
+      .then(restaurants => { restaurantsFound = restaurants.slice() })
       .catch(error => console.error(error))
 
     return restaurantsFound

@@ -17,9 +17,9 @@ router
     // Declare variables for search
     const keyword = req.query.keyword.trim()
     const restaurantsFound = await model.returnRestaurantsFound(keyword)
-    const displayAlert = (restaurantsFound.length === 0) ? true : false
+    const displayAlert = restaurantsFound.length === 0
     const indexPageOptions = model.returnIndexPageOptions(displayAlert, keyword)
     return view.renderIndexPage(res, restaurantsFound, indexPageOptions)
   })
-  
+
 module.exports = router

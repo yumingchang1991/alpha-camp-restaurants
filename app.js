@@ -2,10 +2,9 @@ const express = require('express')
 const { engine } = require('express-handlebars')
 const methodOverride = require('method-override')
 
-const mongoDb = require('./config/mongoose')
-const Restaurant = require('./models/restaurant.js')
 const routes = require('./routes')
-
+require('./config/mongoose')
+require('./models/restaurant.js')
 
 const app = express()
 const port = 3000

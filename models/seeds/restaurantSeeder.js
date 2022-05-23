@@ -1,9 +1,6 @@
 const mongoDb = require('../../config/mongoose')
 const Restaurant = require('../restaurant.js')
 const restaurantsJSON = require('../../restaurant.json')
-const model = {
-  "restaurants": restaurantsJSON.results
-}
 
 mongoDb.once('open', () => {
   // Delete all documents on MongoDb
@@ -15,23 +12,22 @@ mongoDb.once('open', () => {
       console.log('All restaurants are deleted ...')
       createSeeds()
     })
-    .catch( error => console.error(error))
-
+    .catch(error => console.error(error))
 })
 
-function createSeeds() {
-  for (let i = 0; i < model.restaurants.length; i++) {
+function createSeeds () {
+  for (let i = 0; i < restaurantsJSON.results.length; i++) {
     Restaurant
       .create({
-        name: model.restaurants[i].name,
-        name_en: model.restaurants[i].name_en,
-        category: model.restaurants[i].category,
-        image: model.restaurants[i].image,
-        location: model.restaurants[i].location,
-        phone: model.restaurants[i].phone,
-        google_map: model.restaurants[i].google_map,
-        rating: model.restaurants[i].rating,
-        description: model.restaurants[i].description
+        name: restaurantsJSON.results[i].name,
+        name_en: restaurantsJSON.results[i].name_en,
+        category: restaurantsJSON.results[i].category,
+        image: restaurantsJSON.results[i].image,
+        location: restaurantsJSON.results[i].location,
+        phone: restaurantsJSON.results[i].phone,
+        google_map: restaurantsJSON.results[i].google_map,
+        rating: restaurantsJSON.results[i].rating,
+        description: restaurantsJSON.results[i].description
       })
       .catch(error => console.error(error))
   }
