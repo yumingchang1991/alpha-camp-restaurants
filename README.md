@@ -42,8 +42,7 @@ Type in command line below to automatically install dependencies listed in packa
 `npm i` <br>
 
 **NOTE**
-- Bootstrap are linked with offline files that come with this repo. no action from you, YAY!
-- Font awesome is linked through CDN. no actions from you, too, YAY-YAY!
+- Font awesome & Bootstrap are linked through CDN. no actions from you, YAY!
 <br><br>
 
 #### step4: add environment variable to connect to your MongoDB
