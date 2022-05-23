@@ -1,7 +1,7 @@
 # My Restaurants (我的餐廳清單)
 ## Features
-1. Restaurants are **sorted descendingly** based on their ratings in all conditions
-2. Click on a restaurant card will bring users to another page displaying details of that restaurant
+1. Restaurant list are **sorted descendingly** based on their ratings by default, or users could sort restaurant list by their preference
+2. Click on a restaurant tile will bring users to another page displaying details of that restaurant
 3. Users could use keyword to search restaurants' **Mandarin** name, **English** name, and **category**
 4. **Alert message** is displayed when users try to search **spaces**, **empty string**, or there is **no match** from database
 5. Users could add a new restaurant to the list, or edit existing one
@@ -12,7 +12,7 @@ Runtime: `node@16.13.0` <br>
 Framework: `express@4.18.1` <br>
 Database: `mongoose@6.3.3` <br>
 View Engine: `express-handlebars@6.0.5` <br>
-Packages: `nodemon@2.0.16` & `bootstrap@5.1.3` & `fontawesome@6.1.1` & `dotenv@16.0.1` <br>
+Packages: `nodemon@2.0.16` & `bootstrap@5.1.3` & `fontawesome@6.1.1` & `dotenv@16.0.1` & `method-override@3.0.0` <br>
 <br><br><br>
 
 ## Application Routing
@@ -58,10 +58,11 @@ Type in command line below to automatically install dependencies listed in packa
 <br><br>
 
 ## Improvements Directions
-1. Seperate Express routing from app.js 
-2. Enable friendly alert when there is error modifying restaurant data (it now redirects user to homepage only)
-3. Enable user to choose what target to search, is it name or category
-4. Enable user to choose how the list is sorted, by what property, and in ascending or descending order
+- [x] Seperate Express routing from app.js
+- [x] Seperate Model, View & Utility from app.js
+- [x] Enable user to choose how the list is sorted, by what property, and in ascending or descending order
+- [] Enable friendly alert when there is error modifying restaurant data (it now redirects user to homepage only)
+- [] Enable user to choose what target to search, is it name or category
 <br><br><br>
 
 ## How To Participate
