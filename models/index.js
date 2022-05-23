@@ -2,14 +2,12 @@ const Restaurant = require('../models/restaurant')
 const utils = require('../utility')
 
 const model = {
-  async getRestaurants () {
+  async getRestaurants (req) {
+    const sortOption = this.returnSortOption(req.query)
     let restaurantsFound = []
     await Restaurant
       .find()
-      .sort({
-        rating: 'desc',
-        name_en: 'asc'
-      })
+      .sort(sortOption)
       .lean()
       .then(restaurants => { restaurantsFound = restaurants.slice() })
       .catch(error => console.error(error))
@@ -28,11 +26,23 @@ const model = {
     return restaurantFound
   },
 
-  returnIndexPageOptions (displayAlert = false, keyword = '') {
+  returnIndexPageOptions (req, displayAlert = false) {
+    const keyword = req.query.keyword || ""
+    
+    const toggleSort = {}
+    const sortOption = this.returnSortOption(req.query)
+    for (let key in sortOption) {
+      toggleSort[key] = true
+      toggleSort[sortOption[key]] = true
+    }
+
     return {
-      keyword: keyword.trim(),
-      displayAlert,
-      message: utils.returnAlertMessage(keyword.trim())
+      keyword,
+      sort: toggleSort,
+      alert: {
+        displayAlert,
+        message: utils.returnAlertMessage(keyword)
+      }
     }
   },
 
@@ -55,7 +65,19 @@ const model = {
       .catch(error => console.error(error))
 
     return restaurantsFound
-  }
+  },
+
+  returnSortOption(reqQuery) {
+    const sortOption = Object.create(null)
+    if (reqQuery.sortField) {
+      const { sortField, sortOrder } = reqQuery
+      sortOption[sortField] = sortOrder
+    } else {
+      sortOption.rating = 'desc'
+      sortOption.name_en = 'asc'
+    }
+    return sortOption
+  },
 }
 
 module.exports = model

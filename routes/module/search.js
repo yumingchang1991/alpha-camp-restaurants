@@ -9,8 +9,7 @@ router
     // is query string valid ?
     if (utils.isSearchQueryEmpty(req)) {
       const restaurantsToRender = []
-      const keyword = ''
-      const indexPageOptions = model.returnIndexPageOptions(true, keyword)
+      const indexPageOptions = model.returnIndexPageOptions(req, true)
       return view.renderIndexPage(res, restaurantsToRender, indexPageOptions)
     }
 
@@ -18,7 +17,7 @@ router
     const keyword = req.query.keyword.trim()
     const restaurantsFound = await model.returnRestaurantsFound(keyword)
     const displayAlert = restaurantsFound.length === 0
-    const indexPageOptions = model.returnIndexPageOptions(displayAlert, keyword)
+    const indexPageOptions = model.returnIndexPageOptions(req, displayAlert)
     return view.renderIndexPage(res, restaurantsFound, indexPageOptions)
   })
 

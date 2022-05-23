@@ -20,8 +20,7 @@ header {
   filter: blur(3px);
 }
 
-.search-bar .search-bar-outer {
-  margin: 0 auto;
+.tool-bar .search-bar-outer {
   max-width: 680px;
   background-color: #fce2cf;
   border-radius: 8px;
@@ -31,8 +30,21 @@ header {
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 }
 
-.search-bar .search-bar-inner h4 {
+.tool-bar .search-bar-inner h4 {
   color: #9b4b4b;
+}
+
+.sort-bar-outer {
+  padding: 20px 30px;
+  background-color: #fce2cf;
+  border-radius: 8px;
+  border: 0;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.sort-bar-outer h2 {
+  color: #9b4b4b;
+  font-size: 1rem;
 }
 
 .form-control::placeholder {

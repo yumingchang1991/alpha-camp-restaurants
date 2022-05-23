@@ -1,8 +1,8 @@
 const view = {
-  renderIndexPage(res, restaurantsToRender, searchResult) {
+  renderIndexPage(res, restaurantsToRender, indexPageOptions) {
     return res.render('index', {
       restaurants: restaurantsToRender,
-      searchResult
+      indexPageOptions
     })
   },
 

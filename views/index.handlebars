@@ -1,5 +1,5 @@
 <!-- search bar -->
-<div class="container search-bar">
+<div class="container tool-bar d-flex justify-content-between align-items-end px-4">
   <div class="search-bar-outer">
     <div class="search-bar-inner">
       <form action="/search">
@@ -14,11 +14,31 @@
       </form>
     </div>
   </div>
+  <div class="sort-bar-outer">
+    <form id='sort-form' class="d-flex" action="/" method="GET">
+      <h2 class="m-0 flex-shrink-0 align-self-center">排序</h2>
+      <div class="input-group flex-shrink-1 mx-1">
+        <select class="form-select" id="sort-field" name='sortField'>
+          <option value="name" {{#if indexPageOptions.sort.name }} selected {{/if}}>中文名</option>
+          <option value="name_en" {{#if indexPageOptions.sort.name_en }} selected {{/if}}>英文名</option>
+          <option value="rating" {{#if indexPageOptions.sort.rating }} selected {{/if}}>評分</option>
+          <option value="category" {{#if indexPageOptions.sort.category }} selected {{/if}}>類別</option>
+          <option value="location" {{#if indexPageOptions.sort.location }} selected {{/if}}>地區</option>
+        </select>
+      </div>
+      <div class="input-group flex-grow-1 flex-shrink-1">
+        <select class="form-select" id="sort-order" name='sortOrder'>
+          <option value="asc" {{#if indexPageOptions.sort.asc }} selected {{/if}}>升冪 a>z</option>
+          <option value="desc" {{#if indexPageOptions.sort.desc }} selected {{/if}}>降冪 z>a</option>
+        </select>
+      </div>
+    </form>
+  </div>
 </div>
 
-{{#if searchResult.displayAlert}}
+{{#if indexPageOptions.alert.displayAlert}}
 <div class="alert alert-danger mt-5 text-center" role="alert">
-  {{searchResult.message}}
+  {{indexPageOptions.alert.message}}
 </div>
 {{/if}}
 
@@ -45,7 +65,8 @@
           </div>
         </div>
       </a>
-      <div class="card-footer gap-3 px-0 bg-transparent border-top-0 border-bottom d-flex justify-content-end align-items-center">
+      <div
+        class="card-footer gap-3 px-0 bg-transparent border-top-0 border-bottom d-flex justify-content-end align-items-center">
         <a href="/restaurants/{{_id}}/edit" class="text-secondary text-decoration-none">
           <small>Edit</small>
         </a>
@@ -63,3 +84,5 @@
     {{/each}}
   </div>
 </div>
+
+<script src="../javascripts/index.js"></script>

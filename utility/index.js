@@ -8,23 +8,6 @@ const utils = {
   isSearchQueryEmpty (req) {
     return !req.query || req.query.keyword.trim().length === 0
   },
-
-  returnRestaurantFromBody (req, res) {
-    if (!req.body) {
-      return res.redirect('/')
-    }
-    return {
-      name: req.body.name,
-      name_en: req.body.name_en,
-      category: req.body.category,
-      rating: req.body.rating,
-      location: req.body.location,
-      phone: req.body.phone,
-      image: req.body.image,
-      google_map: req.body.google_map,
-      description: req.body.description
-    }
-  }
 }
 
 module.exports = utils

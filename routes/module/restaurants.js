@@ -3,12 +3,11 @@ const router = require('express').Router()
 const Restaurant = require('../../models/restaurant')
 const model = require('../../models')
 const view = require('../../views')
-const utils = require('../../utility')
 
 router
   .route('/')
   .post((req, res) => {
-    const newRestaurant = utils.returnRestaurantFromBody(req, res)
+    const newRestaurant = { ...req.body }
     return Restaurant
       .create(newRestaurant)
       .then(() => res.redirect('/'))
@@ -39,7 +38,7 @@ router
   .route('/:id')
   .put((req, res) => {
     const id = req.params.id
-    const modifiedRestaurant = utils.returnRestaurantFromBody(req, res)
+    const modifiedRestaurant = { ...req.body }
 
     Restaurant
       .findByIdAndUpdate(id, modifiedRestaurant, { new: true, upsert: true })

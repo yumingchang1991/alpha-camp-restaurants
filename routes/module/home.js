@@ -5,8 +5,8 @@ const view = require('../../views')
 router
   .route('/')
   .get(async (req, res) => {
-    const restaurantsToRender = await model.getRestaurants()
-    const indexPageOptions = model.returnIndexPageOptions(false)
+    const restaurantsToRender = await model.getRestaurants(req)
+    const indexPageOptions = model.returnIndexPageOptions(req, false)
     return view.renderIndexPage(res, restaurantsToRender, indexPageOptions)
   })
 
