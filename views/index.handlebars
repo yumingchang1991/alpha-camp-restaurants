@@ -52,7 +52,7 @@
         <a href="/restaurants/{{_id}}" class="text-secondary text-decoration-none">
           <small>Detail</small>
         </a>
-        <form method="post" action="/restaurants/{{_id}}/delete" class="p-0 m-0">
+        <form method="post" action="/restaurants/{{_id}}?_method=DELETE" class="p-0 m-0">
           <button type="submit" class="btn btn-secondary btn-sm rounded">
             <small>Delete</small>
           </button>

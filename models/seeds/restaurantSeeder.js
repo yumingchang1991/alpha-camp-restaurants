@@ -1,4 +1,4 @@
-const mongoDb = require('../../connection.js')
+const mongoDb = require('../../config/mongoose')
 const Restaurant = require('../restaurant.js')
 const restaurantsJSON = require('../../restaurant.json')
 const model = {

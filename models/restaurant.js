@@ -2,16 +2,26 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const Model = mongoose.model
 
+const stringOptions = {
+  type: String,
+  required: true
+}
+
+const numberOptions = {
+  type: Number,
+  required: true
+}
+
 const RestaurantSchema = new Schema({
-  name: String,
-  name_en: String,
-  category: String,
-  image: String,
-  location: String,
-  phone: String,
-  google_map: String,
-  rating: Number,
-  description: String
+  name: stringOptions,
+  name_en: stringOptions,
+  category: stringOptions,
+  image: stringOptions,
+  location: stringOptions,
+  phone: stringOptions,
+  google_map: stringOptions,
+  rating: numberOptions,
+  description: stringOptions
 })
 
 const Restaurant = Model('Restaurant', RestaurantSchema)
