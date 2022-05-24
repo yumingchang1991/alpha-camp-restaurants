@@ -7,7 +7,6 @@ mongoDb.once('open', () => {
   Restaurant
     .find()
     .deleteMany()
-    .exec()
     .then(() => {
       console.log('All restaurants are deleted ...')
       createSeeds()
@@ -16,20 +15,9 @@ mongoDb.once('open', () => {
 })
 
 function createSeeds () {
-  for (let i = 0; i < restaurantsJSON.results.length; i++) {
-    Restaurant
-      .create({
-        name: restaurantsJSON.results[i].name,
-        name_en: restaurantsJSON.results[i].name_en,
-        category: restaurantsJSON.results[i].category,
-        image: restaurantsJSON.results[i].image,
-        location: restaurantsJSON.results[i].location,
-        phone: restaurantsJSON.results[i].phone,
-        google_map: restaurantsJSON.results[i].google_map,
-        rating: restaurantsJSON.results[i].rating,
-        description: restaurantsJSON.results[i].description
-      })
-      .catch(error => console.error(error))
-  }
+  Restaurant
+    .create(restaurantsJSON.results)
+    .catch(error => console.error(error))
+    .finally(() => mongoDb.close())
   console.log('Complete resetting MongoDB with seeds data only ...')
 }
