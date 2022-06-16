@@ -7,7 +7,7 @@ const view = require('../../views')
 router
   .route('/')
   .post((req, res) => {
-    const newRestaurant = { ...req.body }
+    const newRestaurant = { ...req.body, userId: req.user._id }
     return Restaurant
       .create(newRestaurant)
       .then(() => res.redirect('/'))
