@@ -1,4 +1,5 @@
 const Restaurant = require('../models/restaurant')
+const User = require('./user')
 const utils = require('../utility')
 
 const model = {
@@ -6,7 +7,7 @@ const model = {
     const sortOption = this.returnSortOption(req.query)
     let restaurantsFound = []
     await Restaurant
-      .find()
+      .find({ userId: req.user._id })
       .limit(20)
       .sort(sortOption)
       .lean()
@@ -53,6 +54,7 @@ const model = {
     const regex = new RegExp(keyword, 'gi')
     let restaurantsFound = []
     await Restaurant.find({
+      userId: req.user._id,
       $or: [
         { name: regex },
         { name_en: regex },
