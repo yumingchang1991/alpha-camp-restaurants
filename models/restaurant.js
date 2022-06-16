@@ -21,7 +21,13 @@ const RestaurantSchema = new Schema({
   phone: stringOptions,
   google_map: stringOptions,
   rating: numberOptions,
-  description: stringOptions
+  description: stringOptions,
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    index: true,
+    required: true
+  }
 })
 
 const Restaurant = Model('Restaurant', RestaurantSchema)
